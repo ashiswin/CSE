@@ -27,6 +27,8 @@ void main(int argc, char** argv) {
 	
 	// Begin main program loop
 	while(1) {
+		int historic = 0;
+		
 		if(argc > 1) { // Check if commands were passed as arguments and execute those instead
 			strcpy(command, argv[1]);
 		}
@@ -49,6 +51,7 @@ void main(int argc, char** argv) {
 				continue;
 			}
 			strcpy(command, head->command); // Set the current command to the previous command
+			historic = 1;
 		}
 		else if(strcmp(comm, "history") == 0) { // Check if need to print history
 			struct historyEntry *iteration = head;
@@ -68,7 +71,7 @@ void main(int argc, char** argv) {
 			
 			// Check if requested command exists
 			if(historyIndex > historySize) {
-				printf("Error: Going too far back in history, command doesn't exist\n");
+				printf("Error: The number must be between 1 to %d, inclusive\n", historySize);
 				if(argc > 1) return; // If run with args, quit
 				continue;
 			}
@@ -85,6 +88,7 @@ void main(int argc, char** argv) {
 			
 			// Set current command to historic command
 			strcpy(command, iteration->command);
+			historic = 1;
 		}
 		
 		if(strcmp(comm, "cd") == 0) { // Check for change directory command
@@ -152,21 +156,23 @@ void main(int argc, char** argv) {
 		
 		// Reach here if a valid command was executed
 		
-		// Push the command onto the history stack
-		struct historyEntry *newCommand = (struct historyEntry*) malloc(sizeof(struct historyEntry)); // Allocate for new command entry
-		
-		newCommand->command = (char*) malloc(sizeof(command)); // Allocate space for command string
-		strcpy(newCommand->command, command); // Copy command string into the structure
-		
-		if(head == NULL) { // Check if head of stack exists
-			head = newCommand; // Set new head
-			newCommand->before = NULL;
+		if(!historic) {
+			// Push the command onto the history stack
+			struct historyEntry *newCommand = (struct historyEntry*) malloc(sizeof(struct historyEntry)); // Allocate for new command entry
+			
+			newCommand->command = (char*) malloc(sizeof(command)); // Allocate space for command string
+			strcpy(newCommand->command, command); // Copy command string into the structure
+			
+			if(head == NULL) { // Check if head of stack exists
+				head = newCommand; // Set new head
+				newCommand->before = NULL;
+			}
+			else { // Push current command onto the stack
+				newCommand->before = head;
+				head = newCommand;
+			}
+			historySize++; // Increment history counter
 		}
-		else { // Push current command onto the stack
-			newCommand->before = head;
-			head = newCommand;
-		}
-		historySize++; // Increment history counter
 		
 		if(argc > 1) return; // If run with args, quit
 	}
