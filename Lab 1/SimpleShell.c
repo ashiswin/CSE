@@ -113,6 +113,13 @@ void main(int argc, char** argv) {
 				dirPart = strtok(NULL, " "); // Continue tokenizing string
 			}
 			
+			if(dir[0] == '~') { // Check if we need to use the home directory
+				char* temp = malloc(strlen(getenv("HOME")) + strlen(dir)); // Allocate string for the expanded location
+				dir[0] = '/';
+				sprintf(temp, "%s%s", getenv("HOME"), dir); // Build the new string
+				strcpy(dir, temp); // Copy the newly formed directory into the initial directory string
+			}
+			
 			if(strcmp(dir, "..") == 0) { // Check if we need to change to parent directory
 				int i; // For-loop index
 				
@@ -123,9 +130,6 @@ void main(int argc, char** argv) {
 					}
 				}
 				chdir(dir); // Change to the parent
-			}
-			else if(strcmp(dir, "~") == 0) { // Check if we need to change to home directory
-				chdir(getenv("HOME")); // Extract environment variable
 			}
 			else { // Fallback to change to child directory
 				if(chdir(dir) != 0) { // Check for successful change
