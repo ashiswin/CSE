@@ -117,7 +117,10 @@ void main(int argc, char** argv) {
 				dirPart = strtok(NULL, " "); // Continue tokenizing string
 			}
 			
-			if(dir[0] == '~') { // Check if we need to use the home directory
+			if(strlen(dir) == 0) {
+				strcpy(dir, getenv("HOME"));
+			}
+			else if(dir[0] == '~') { // Check if we need to use the home directory
 				char* temp = malloc(strlen(getenv("HOME")) + strlen(dir)); // Allocate string for the expanded location
 				dir[0] = '/';
 				sprintf(temp, "%s%s", getenv("HOME"), dir); // Build the new string
