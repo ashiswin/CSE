@@ -6,8 +6,8 @@ public class ProcessGraph {
 
     //add node if not yet created
     public static void addNode(int index){
-        if (index>=nodes.size()){
-            nodes.add(new ProcessGraphNode(index));
+        for(int i = nodes.size(); i <= index; i++) {
+            nodes.add(new ProcessGraphNode(i));
         }
     }
 

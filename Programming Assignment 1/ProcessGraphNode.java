@@ -13,6 +13,7 @@ public class ProcessGraphNode {
     private File outputFile;
     private String command;
     private boolean runnable;
+    private boolean running;
     private boolean executed;
 
 
@@ -31,7 +32,10 @@ public class ProcessGraphNode {
     public void setExecuted() {
         this.executed = true;
     }
-
+    public void setRunning() {
+	this.running = true;
+    }
+    
     public boolean isRunnable() {
         return runnable;
     }
@@ -39,7 +43,11 @@ public class ProcessGraphNode {
     public boolean isExecuted() {
         return executed;
     }
-
+    
+    public boolean isRunning() {
+	return running;
+    }
+    
     public void addChild(ProcessGraphNode child){
         if (!children.contains(child)){
             children.add(child);
@@ -89,11 +97,11 @@ public class ProcessGraphNode {
 
     public synchronized boolean allParentsExecuted(){
         boolean ans=true;
-        for (ProcessGraphNode child : this.getChildren()) {
+        /*for (ProcessGraphNode child : this.getChildren()) {
             if (child.isExecuted()) {
                 return false;
             }
-        }
+        }*/
         for (ProcessGraphNode parent:this.getParents()) {
             if (!parent.isExecuted())
                 ans=false;
