@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -39,24 +40,56 @@ public class MedianThread {
 			threads[i].start();
 		}
 		
-		int[] arr = new int[integers.size()];
+		ArrayList<Integer> sorted = new ArrayList<>();
 		
-		// TODO: implement mergeing of sorted arrays
 		for(int i = 0; i < NumOfThread; i++) {
 			threads[i].join();
+			sorted = merge(sorted, threads[i].getInternal());
 		}
 		
 		long elapsed = System.nanoTime() - start;
 		
-		System.out.println("The Median value is " + computeMedian(arr));
+		System.out.println("The Median value is " + computeMedian(sorted));
 		System.out.println("Running time is " + (elapsed / 1000000) + " milliseconds\n");
 	}
 	
-	public static double computeMedian(int[] arr) {
-		if(arr.length % 2 == 0) {
-			return (arr[arr.length / 2] + arr[arr.length / 2 + 1]) / 2;
+	public static ArrayList<Integer> merge(ArrayList<Integer> left, ArrayList<Integer> right) {
+		ArrayList<Integer> merged = new ArrayList<Integer>();
+		int l = 0;
+		int r = 0;
+		
+		for(int i = 0; i < left.size() + right.size(); i++) {
+			if(l == left.size()) {
+				for(int j = r; j < right.size(); j++) {
+					merged.add(right.get(j));
+				}
+				break;
+			}
+			else if(r == right.size()) {
+				for(int j = l; j < left.size(); j++) {
+					merged.add(left.get(j));
+				}
+				break;
+			}
+			
+			if(left.get(l) <= right.get(r)) {
+				merged.add(left.get(l));
+				l++;
+			}
+			else {
+				merged.add(right.get(r));
+				r++;
+			}
 		}
-		return arr[arr.length / 2];
+		
+		return merged;
+	}
+	
+	public static double computeMedian(ArrayList<Integer> arr) {
+		if(arr.size() % 2 == 0) {
+			return (arr.get(arr.size() / 2) + arr.get(arr.size() / 2 + 1)) / 2;
+		}
+		return arr.get(arr.size() / 2);
 	}
 }
 
@@ -73,13 +106,45 @@ class MedianMultiThread extends Thread {
 	}
 
 	public void run() {
-		// called by object.start()
-		mergeSort(list);
+		this.list = mergeSortReal(this.list);
 		
 	}
 	
-	// TODO: implement merge sort here, recursive algorithm
-	public void mergeSort(ArrayList<Integer> array) {
+	public ArrayList<Integer> mergeSortReal(List<Integer> array) {
+		if(array.size() == 1) {
+			return new ArrayList<Integer>(array);
+		}
 		
+		ArrayList<Integer> left = mergeSortReal(array.subList(0, (array.size() / 2)));
+		ArrayList<Integer> right = mergeSortReal(array.subList((array.size() / 2), array.size()));
+		
+		ArrayList<Integer> merged = new ArrayList<Integer>();
+		int l = 0;
+		int r = 0;
+		
+		for(int i = 0; i < left.size() + right.size(); i++) {
+			if(l == left.size()) {
+				for(int j = r; j < right.size(); j++) {
+					merged.add(right.get(j));
+				}
+				break;
+			}
+			else if(r == right.size()) {
+				for(int j = l; j < left.size(); j++) {
+					merged.add(left.get(j));
+				}
+				break;
+			}
+			
+			if(left.get(l) <= right.get(r)) {
+				merged.add(left.get(l));
+				l++;
+			}
+			else {
+				merged.add(right.get(r));
+				r++;
+			}
+		}
+		return merged;
 	}
 }
