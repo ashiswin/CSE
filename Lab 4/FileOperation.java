@@ -1,4 +1,4 @@
-// package Week5;
+// Copyright (C) Isaac Ashwin Ravindran 1002151
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,17 +47,33 @@ public class FileOperation {
 			}
 
 			if(commandStr[0].equals("create")) {
+				if(commandStr.length < 2) {
+					System.out.println("Insufficient paramters\nUsage: create <filename>");
+					continue;
+				}
 				Java_create(currentDirectory, commandStr[1]);
 				continue;
 			}
 			
 			if(commandStr[0].equals("delete")) {
+				if(commandStr.length < 2) {
+					System.out.println("Insufficient paramters\nUsage: delete <filename>");
+					continue;
+				}
 				Java_delete(currentDirectory, commandStr[1]);
 				continue;
 			}
 			
 			if(commandStr[0].equals("display")) {
-				Java_cat(currentDirectory, commandStr[1]);
+				if(commandStr.length < 2) {
+					System.out.println("Insufficient paramters\nUsage: display <filename>");
+					continue;
+				}
+				try {
+					Java_cat(currentDirectory, commandStr[1]);
+				} catch(IOException e) {
+					System.out.println("File does not exist");
+				}
 				continue;
 			}
 			
@@ -75,6 +91,10 @@ public class FileOperation {
 			}
 			
 			if(commandStr[0].equals("find")) {
+				if(commandStr.length < 2) {
+					System.out.println("Insufficient paramters\nUsage: find <keyword>");
+					continue;
+				}
 				Java_find(currentDirectory, commandStr[1]);
 				continue;
 			}
@@ -84,10 +104,18 @@ public class FileOperation {
 					Java_tree(currentDirectory, -1, null);
 				}
 				else if(commandStr.length == 2) {
-					Java_tree(currentDirectory, Integer.parseInt(commandStr[1]), null);
+					try {
+						Java_tree(currentDirectory, Integer.parseInt(commandStr[1]), null);
+					} catch(NumberFormatException ex) {
+						System.out.println("Invalid depth entered\nUsage: tree [depth] [sort_method]");
+					}
 				}
 				else {
-					Java_tree(currentDirectory, Integer.parseInt(commandStr[1]), commandStr[2]);
+					try {
+						Java_tree(currentDirectory, Integer.parseInt(commandStr[1]), commandStr[2]);
+					} catch(NumberFormatException ex) {
+						System.out.println("Invalid depth entered\nUsage: tree [depth] [sort_method]");
+					}
 				}
 				continue;
 			}
