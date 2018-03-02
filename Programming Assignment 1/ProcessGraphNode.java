@@ -1,6 +1,6 @@
-import java.io.File;
 import java.util.ArrayList;
-
+import java.io.*;
+import java.util.Arrays;
 public class ProcessGraphNode {
 
     //point to all the parents
@@ -15,7 +15,7 @@ public class ProcessGraphNode {
     private boolean runnable;
     private boolean running;
     private boolean executed;
-
+    public Thread runner;
 
     public ProcessGraphNode(int nodeId ) {
         this.nodeId = nodeId;
@@ -108,5 +108,39 @@ public class ProcessGraphNode {
         }
 
         return ans;
+    }
+    public void start() {
+	if(!allParentsExecuted()) {
+		return;
+	}
+	
+	runner = new Thread(new Runnable() {
+		public void run() {
+			try {
+				String[] commands = getCommand().split(" ");
+				
+				ProcessBuilder pb = new ProcessBuilder(Arrays.asList(commands));
+				pb.directory(ProcessManagement.currentDirectory);
+				if(!getInputFile().getName().equals("stdin")) {
+					pb.redirectInput(getInputFile());
+				}
+				if(!getOutputFile().getName().equals("stdout")) {
+					getOutputFile().createNewFile();
+					pb.redirectOutput(getOutputFile());
+					pb.redirectError(getOutputFile());
+				}
+				Process p = pb.start();
+				p.waitFor();
+				setExecuted();
+				
+				for(ProcessGraphNode c : getChildren()) {
+					c.start();
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	});
+	runner.start();
     }
 }
