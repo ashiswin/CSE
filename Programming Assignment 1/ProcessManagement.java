@@ -18,12 +18,6 @@ public class ProcessManagement {
         // Print the graph information
 	ProcessGraph.printGraph();
 	
-	Stack<ProcessGraphNode> stack = new Stack<>();
-	boolean[] visited = new boolean[ProcessGraph.nodes.size()];
-	for(int i = 0; i < visited.length; i++) {
-		visited[i] = false;
-	}
-	
 	for(ProcessGraphNode n : ProcessGraph.nodes) {
 		n.start();
 	}
