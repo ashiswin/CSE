@@ -1,5 +1,0 @@
-im 0
-im 1
-im 3 should be triple
-im 3 should be triple
-im 3 should be triple

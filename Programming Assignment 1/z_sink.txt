@@ -1,6 +1,0 @@
-  PID TTY          TIME CMD
- 4354 pts/0    00:00:00 bash
- 5815 pts/0    00:00:00 java
- 5856 pts/0    00:00:00 sleep
- 5857 pts/0    00:00:00 ps
-wazzup
