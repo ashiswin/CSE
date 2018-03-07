@@ -23,6 +23,7 @@ public class ProcessManagement {
 	}
 	
 	for(int i = 0; i < visited.length; i++) {
+		if(ProcessGraph.nodes.get(i).runner == null) continue;
 		ProcessGraph.nodes.get(i).runner.join();
 	}
 	
