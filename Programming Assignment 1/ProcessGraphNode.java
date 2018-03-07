@@ -141,6 +141,9 @@ public class ProcessGraphNode {
 					if(c.runner == null) continue;
 					c.runner.join();
 				}
+			} catch(IOException e) {
+				System.err.println("Unable to find input file " + getInputFile());
+				System.exit(-1);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

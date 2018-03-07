@@ -7,7 +7,7 @@ public class ProcessManagement {
     //set the working directory
     public static File currentDirectory = new File("/home/ashiswin/Documents/CSE/Programming Assignment 1");
     //set the instructions file
-    private static File instructionSet = new File("graph-file3");
+    private static File instructionSet = new File("graph-file1");
     public static Object lock=new Object();
     
     public static void main(String[] args) throws InterruptedException {
