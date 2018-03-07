@@ -18,11 +18,12 @@ public class ProcessManagement {
         // Print the graph information
 	ProcessGraph.printGraph();
 	
+	// Loop through and launch every process' runner
 	for(ProcessGraphNode n : ProcessGraph.nodes) {
 		n.start();
 	}
 	
-	for(int i = 0; i < visited.length; i++) {
+	for(int i = 0; i < ProcessGraph.nodes.length; i++) {
 		if(ProcessGraph.nodes.get(i).runner == null) continue;
 		ProcessGraph.nodes.get(i).runner.join();
 	}
