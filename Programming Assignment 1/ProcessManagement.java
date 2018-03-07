@@ -23,7 +23,7 @@ public class ProcessManagement {
 		n.start();
 	}
 	
-	for(int i = 0; i < ProcessGraph.nodes.length; i++) {
+	for(int i = 0; i < ProcessGraph.nodes.size(); i++) {
 		if(ProcessGraph.nodes.get(i).runner == null) continue;
 		ProcessGraph.nodes.get(i).runner.join();
 	}
