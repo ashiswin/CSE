@@ -23,11 +23,14 @@ public class ProcessManagement {
 		n.start();
 	}
 	
+	// Wait for all runner threads to complete
 	for(int i = 0; i < ProcessGraph.nodes.size(); i++) {
+		// Ignore invalid runners
 		if(ProcessGraph.nodes.get(i).runner == null) continue;
 		ProcessGraph.nodes.get(i).runner.join();
 	}
 	
+	// Print termination message
         System.out.println("All process finished successfully");
     }
 
