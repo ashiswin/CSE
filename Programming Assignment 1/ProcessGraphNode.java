@@ -136,6 +136,11 @@ public class ProcessGraphNode {
 				for(ProcessGraphNode c : getChildren()) {
 					c.start();
 				}
+				
+				for(ProcessGraphNode c : getChildren()) {
+					if(c.runner == null) continue;
+					c.runner.join();
+				}
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
