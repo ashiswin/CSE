@@ -1,0 +1,29 @@
+/* Programming Assignment 1
+* Author 1 : Isaac Ashwin Ravindran
+* ID : 1002151
+* Author 2 : Tan Oon Tong
+* ID : 1002155
+* Date : 08/03/2017 */
+
+Compilation Guide
+1. Input current directory of project folder under currentDirectory in ProcessManagement.java; line 7.
+
+**Ensure instruction set is in the same project folder
+2. Input filepath of instruction file under instructionSet in ProcessManagement.java; line 9.
+
+3. Compile project by executing command "javac ProcessManagement.java" in terminal
+
+4. Run project by executing command "java ProcessManagement" in terminal
+
+-----------------------------------------------------------------
+The aim of the this assignment is to traverse a directed acyclic graph (DAG) in parallel, which nodes consists of processes. 
+
+We achieve this goal by making use of threads. 
+
+First we attempt to execute each node process in their own individual thread.(ProcessManagement.java;line 20) The node will only execute iff all parent nodes have finished executing, else it will idle. (ProcessGraphNode.java; line 116)
+
+Once a node process has completed, it will attempt to execute its child process. (ProcessGraphNode.java; line 150)
+
+As a result of this interaction, nodes will not busy wait for their parent nodes to complete and will instead be executed when all the parent nodes have finished executing.
+
+

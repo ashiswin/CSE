@@ -4,7 +4,9 @@ public class ProcessGraph {
     //an static ArrayList of ProcessGraphNode containing all the node of the graph
     public static ArrayList<ProcessGraphNode> nodes=new ArrayList<>();
 
-    //add node if not yet created
+    /**Add node to nodes if it doesnt already exist
+     *
+     * @param index*/
     public static void addNode(int index){
         for(int i = nodes.size(); i <= index; i++) {
             nodes.add(new ProcessGraphNode(i));

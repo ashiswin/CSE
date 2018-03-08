@@ -17,97 +17,91 @@ public class ProcessGraphNode {
     private boolean executed;
     public Thread runner;
 
+    //Constructor
     public ProcessGraphNode(int nodeId ) {
         this.nodeId = nodeId;
         this.runnable=false;
         this.executed=false;
     }
 
+    //Getters and setters
     public void setRunnable() {
         this.runnable = true;
     }
-
     public void setNotRunable() {this.runnable = false;}
-
     public void setExecuted() {
         this.executed = true;
     }
     public void setRunning() {
 	this.running = true;
     }
-    
     public boolean isRunnable() {
         return runnable;
     }
-
     public boolean isExecuted() {
         return executed;
     }
-    
     public boolean isRunning() {
 	return running;
     }
-    
+    public void setInputFile(File inputFile) {
+        this.inputFile = inputFile;
+    }
+    public void setCommand(String command) {
+        this.command = command;
+    }
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
+    }
+    public File getInputFile() {
+        return inputFile;
+    }
+    public File getOutputFile() {
+        return outputFile;
+    }
+    public String getCommand() {
+        return command;
+    }
+    public ArrayList<ProcessGraphNode> getParents() {
+        return parents;
+    }
+    public ArrayList<ProcessGraphNode> getChildren() {
+        return children;
+    }
+    public int getNodeId() {
+        return nodeId;
+    }
+
+    /**Add a child to this node if it does not already contain the child
+     *
+     * @param child*/
     public void addChild(ProcessGraphNode child){
         if (!children.contains(child)){
             children.add(child);
         }
     }
 
+    /**Add a parent to this node if it does not already contain the parent
+     *
+     * @param parent*/
     public void addParent(ProcessGraphNode parent){
         if (!parents.contains(parent)){
             parents.add(parent);
         }
     }
-    public void setInputFile(File inputFile) {
-        this.inputFile = inputFile;
-    }
 
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public void setOutputFile(File outputFile) {
-        this.outputFile = outputFile;
-    }
-
-    public File getInputFile() {
-        return inputFile;
-    }
-
-    public File getOutputFile() {
-        return outputFile;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public ArrayList<ProcessGraphNode> getParents() {
-        return parents;
-    }
-
-    public ArrayList<ProcessGraphNode> getChildren() {
-        return children;
-    }
-
-    public int getNodeId() {
-        return nodeId;
-    }
-
+    /**
+     * Checks if all parents of this node has been executed
+     *
+     * @return boolean
+     * */
     public synchronized boolean allParentsExecuted(){
-        boolean ans=true;
-        /*for (ProcessGraphNode child : this.getChildren()) {
-            if (child.isExecuted()) {
-                return false;
-            }
-        }*/
+        boolean parentsExecuted=true;
         for (ProcessGraphNode parent:this.getParents()) {
             if (!parent.isExecuted())
-                ans=false;
+                parentsExecuted=false;
         }
-
-        return ans;
+        return parentsExecuted;
     }
     
     /**
@@ -124,7 +118,7 @@ public class ProcessGraphNode {
 	}
 	
 	// Create new runner thread for process
-	runner = new Thread(new Runnable() {
+	runner = new Thread(new Runnable(){
 		public void run() {
 			try {
 				// Prepare commands
@@ -133,10 +127,9 @@ public class ProcessGraphNode {
 				// Create ProcessBuilder
 				ProcessBuilder pb = new ProcessBuilder(Arrays.asList(commands));
 				pb.directory(ProcessManagement.currentDirectory);
-				
 				// Redirect input if required
 				if(!getInputFile().getName().equals("stdin")) {
-					pb.redirectInput(getInputFile()); // Potentially throws IOException, caught later
+                    pb.redirectInput(getInputFile()); // Potentially throws IOException, caught later
 				}
 				
 				// Redirect output if required
