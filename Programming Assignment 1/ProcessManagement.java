@@ -4,9 +4,9 @@ import java.util.Stack;
 
 public class ProcessManagement {
     //set the working directory
-    public static File currentDirectory = new File("./src");
+    public static File currentDirectory = new File(".");
     //set the instructions file
-    private static File instructionSet = new File("graph-file1");
+    private static File instructionSet = new File("graph-file");
 
     public static void main(String[] args) throws InterruptedException {
 

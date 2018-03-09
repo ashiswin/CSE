@@ -129,7 +129,7 @@ public class ProcessGraphNode {
 				pb.directory(ProcessManagement.currentDirectory);
 				// Redirect input if required
 				if(!getInputFile().getName().equals("stdin")) {
-                    pb.redirectInput(getInputFile()); // Potentially throws IOException, caught later
+                    			pb.redirectInput(getInputFile()); // Potentially throws IOException, caught later
 				}
 				
 				// Redirect output if required
