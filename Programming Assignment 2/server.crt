@@ -1,0 +1,60 @@
+Certificate:
+    Data:
+        Version: 1 (0x0)
+        Serial Number: 163 (0xa3)
+    Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=SG, ST=Singapore, L=Singapore, O=SUTD, OU=SUTD, CN=Benjamin Kang/emailAddress=webby1111@hotmail.com
+        Validity
+            Not Before: Mar 22 11:27:28 2018 GMT
+            Not After : Mar 22 11:27:28 2019 GMT
+        Subject: C=SG, ST=Singapore, O=SecStore, CN=SecStore/emailAddress=1002151@mymail.sutd.edu.sg
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:b9:3b:34:11:ae:cc:ec:ab:39:37:49:6b:be:a3:
+                    4a:d2:af:56:a2:a7:38:9b:e4:a4:d5:31:4f:7b:fd:
+                    c6:ac:7a:87:63:13:6c:eb:b2:35:7d:ca:3a:35:fe:
+                    4e:ad:27:02:6f:92:94:1f:c8:4a:fb:88:4b:8a:87:
+                    bc:29:1d:dc:46:82:a4:95:2d:83:f2:ea:a9:68:1e:
+                    90:78:b3:0d:ab:8f:d5:4c:49:5d:05:5f:5a:36:67:
+                    d3:e5:1d:cc:7b:6a:d5:da:e4:51:be:4f:36:e0:2c:
+                    da:a5:96:f4:22:63:5d:b3:bb:40:f6:cb:24:44:d2:
+                    79:d4:92:56:36:f9:e2:f5:cc:ce:d4:e5:36:b5:74:
+                    41:f4:28:0c:55:b5:29:c9:7c:40:27:1d:ec:30:00:
+                    38:85:d0:b4:f6:fd:9d:fb:57:fd:64:5f:ae:81:e4:
+                    14:b3:d7:4a:48:b5:6b:7f:83:e0:21:5e:76:2d:16:
+                    d8:34:45:7e:e0:f3:b4:4b:52:c3:38:03:d6:cf:e6:
+                    38:02:d0:42:84:28:89:53:b2:86:57:c2:37:94:55:
+                    80:ca:ef:30:25:38:35:a4:be:4e:03:a8:b0:dd:0b:
+                    f3:ee:84:5a:02:8c:8b:f2:0b:e1:9b:fe:c1:11:c8:
+                    4a:6d:5d:77:b7:87:3d:ea:55:2b:72:e9:1d:a1:f4:
+                    cf:9f
+                Exponent: 65537 (0x10001)
+    Signature Algorithm: md5WithRSAEncryption
+         25:bb:9b:a9:4c:fc:a2:05:1e:00:d9:b8:cb:f1:6a:ea:73:15:
+         95:ba:f9:39:aa:5a:e8:6f:9a:a0:07:49:6a:bb:7c:9f:16:69:
+         68:5f:97:f4:8c:42:9a:db:55:e8:2d:b1:89:12:40:d5:00:e3:
+         81:3e:9b:08:07:a5:e0:b9:1f:4f:b0:19:95:cf:f0:09:e7:c3:
+         dc:b7:b5:82:1b:90:58:ba:32:66:bf:f4:88:72:a4:30:d6:2f:
+         d6:76:7f:6c:7e:41:8d:36:b2:1e:2c:23:ca:2e:61:55:24:7d:
+         76:7d:bb:02:35:2f:b3:58:a4:8f:2e:d9:8b:c4:c4:35:28:cd:
+         4f:8d
+-----BEGIN CERTIFICATE-----
+MIIC+DCCAmECAgCjMA0GCSqGSIb3DQEBBAUAMIGRMQswCQYDVQQGEwJTRzESMBAG
+A1UECBMJU2luZ2Fwb3JlMRIwEAYDVQQHEwlTaW5nYXBvcmUxDTALBgNVBAoTBFNV
+VEQxDTALBgNVBAsTBFNVVEQxFjAUBgNVBAMTDUJlbmphbWluIEthbmcxJDAiBgkq
+hkiG9w0BCQEWFXdlYmJ5MTExMUBob3RtYWlsLmNvbTAeFw0xODAzMjIxMTI3Mjha
+Fw0xOTAzMjIxMTI3MjhaMHIxCzAJBgNVBAYTAlNHMRIwEAYDVQQIDAlTaW5nYXBv
+cmUxETAPBgNVBAoMCFNlY1N0b3JlMREwDwYDVQQDDAhTZWNTdG9yZTEpMCcGCSqG
+SIb3DQEJARYaMTAwMjE1MUBteW1haWwuc3V0ZC5lZHUuc2cwggEiMA0GCSqGSIb3
+DQEBAQUAA4IBDwAwggEKAoIBAQC5OzQRrszsqzk3SWu+o0rSr1aipzib5KTVMU97
+/caseodjE2zrsjV9yjo1/k6tJwJvkpQfyEr7iEuKh7wpHdxGgqSVLYPy6qloHpB4
+sw2rj9VMSV0FX1o2Z9PlHcx7atXa5FG+TzbgLNqllvQiY12zu0D2yyRE0nnUklY2
++eL1zM7U5Ta1dEH0KAxVtSnJfEAnHewwADiF0LT2/Z37V/1kX66B5BSz10pItWt/
+g+AhXnYtFtg0RX7g87RLUsM4A9bP5jgC0EKEKIlTsoZXwjeUVYDK7zAlODWkvk4D
+qLDdC/PuhFoCjIvyC+Gb/sERyEptXXe3hz3qVSty6R2h9M+fAgMBAAEwDQYJKoZI
+hvcNAQEEBQADgYEAJbubqUz8ogUeANm4y/Fq6nMVlbr5Oapa6G+aoAdJart8nxZp
+aF+X9IxCmttV6C2xiRJA1QDjgT6bCAel4LkfT7AZlc/wCefD3Le1ghuQWLoyZr/0
+iHKkMNYv1nZ/bH5BjTayHiwjyi5hVSR9dn27AjUvs1ikjy7Zi8TENSjNT40=
+-----END CERTIFICATE-----
