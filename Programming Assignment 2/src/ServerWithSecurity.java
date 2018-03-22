@@ -91,7 +91,7 @@ public class ServerWithSecurity {
 		FileOutputStream fileOutputStream = null;
 		BufferedOutputStream bufferedFileOutputStream = null;
 		boolean established = false;
-		
+		int count = 0;
 		try {
 			System.out.println("Server starting on port " + PORT);
 			welcomeSocket = new ServerSocket(PORT);
@@ -104,11 +104,9 @@ public class ServerWithSecurity {
 			toClient = new DataOutputStream(connectionSocket.getOutputStream());
 			
 			while (!connectionSocket.isClosed()) {
-
 				int packetType = fromClient.readInt();
-
 				// If the packet is for transferring the filename
-				if (established && packetType == 0) {
+				if (established && packetType == 5) {
 
 					System.out.println("Receiving file...");
 
@@ -116,21 +114,20 @@ public class ServerWithSecurity {
 					byte [] filename = new byte[numBytes];
 					fromClient.read(filename);
 
+					System.out.println("Saving file to " + "../recv/" + new String(filename, 0, numBytes));
 					fileOutputStream = new FileOutputStream("../recv/" + new String(filename, 0, numBytes));
 					bufferedFileOutputStream = new BufferedOutputStream(fileOutputStream);
-
 				// If the packet is for transferring a chunk of the file
 				} else if (established && packetType == 1) {
-
 					int numBytes = fromClient.readInt();
-					byte [] block = new byte[numBytes];
-					fromClient.read(block);
-
-					if (numBytes > 0)
+					if (numBytes > 0) {
+						byte[] block = new byte[numBytes];
+						fromClient.read(block);
 						bufferedFileOutputStream.write(block, 0, numBytes);
-
+						count++;
+					}
 				} else if (established && packetType == 2) {
-
+					System.out.println("Received " + count + " blocks");
 					System.out.println("Closing connection...");
 
 					if (bufferedFileOutputStream != null) bufferedFileOutputStream.close();
@@ -151,7 +148,6 @@ public class ServerWithSecurity {
 					}
 					else {
 						established = true;
-						System.out.println("HELO");
 						System.out.println("Sending welcome message...");
 						toClient.writeInt(signedWelcome.length);
 						toClient.write(signedWelcome);
@@ -176,9 +172,16 @@ public class ServerWithSecurity {
 						numBytes = bis.read(fromFileBuffer);
 						fileEnded = numBytes < fromFileBuffer.length;
 						
-						toClient.write(fromFileBuffer);
+						toClient.writeInt(1);
+						toClient.writeInt(numBytes);
+						if(numBytes > 0) {
+							toClient.write(fromFileBuffer);
+						}
 						toClient.flush();
 					}
+					
+					bis.close();
+					toClient.flush();
 					
 					System.out.println("Sent server certificate");
 				}

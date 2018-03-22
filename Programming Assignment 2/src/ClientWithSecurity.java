@@ -2,6 +2,8 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.net.Socket;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -18,7 +20,7 @@ public class ClientWithSecurity {
 	private static final String RSA = "RSA";
 	
 	public static void main(String[] args) {
-	    	String filename = "../rr.txt";
+	    	String filename = "rr.txt";
 		
 		int numBytes = 0;
 
@@ -26,9 +28,6 @@ public class ClientWithSecurity {
 
 		DataOutputStream toServer = null;
 		DataInputStream fromServer = null;
-
-	    	FileInputStream fileInputStream = null;
-		BufferedInputStream bufferedFileInputStream = null;
 
 		long timeStarted = System.nanoTime();
 
@@ -56,8 +55,27 @@ public class ClientWithSecurity {
 			toServer.writeInt(4);
 			toServer.flush();
 			
+			int certLength = fromServer.readInt();
+			byte[] cert = new byte[certLength];
+			
+			int read = fromServer.readInt();
+			int offset = 0;
+			
+			while(read == 1) {
+				int length = fromServer.readInt();
+				if(length == -1) break;
+				byte[] block = new byte[length];
+				fromServer.read(block);
+				for(int i = 0; i < length; i++) {
+					cert[offset + i] = block[i];
+				}
+				offset += length;
+				
+				read = fromServer.readInt();
+			}
+			
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
-			X509Certificate serverCert = (X509Certificate) cf.generateCertificate(fromServer);
+			X509Certificate serverCert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(cert));
 
 			System.out.println("Received server certificate!");
 			System.out.println("Verifying server certificate with " + CA_CERT_PATH + "...");
@@ -80,43 +98,60 @@ public class ClientWithSecurity {
 			
 			System.out.println("Verified welcome message!");
 			System.out.println("Sending file...");
-
-			// Send the filename
-			toServer.writeInt(0);
-			toServer.writeInt(filename.getBytes().length);
-			toServer.write(filename.getBytes());
-			toServer.flush();
-
-			// Open the file
-			fileInputStream = new FileInputStream(filename);
-			bufferedFileInputStream = new BufferedInputStream(fileInputStream);
-
-			byte [] fromFileBuffer = new byte[117];
-
-			// Send the file
-			for (boolean fileEnded = false; !fileEnded;) {
-				numBytes = bufferedFileInputStream.read(fromFileBuffer);
-				fileEnded = numBytes < fromFileBuffer.length;
-
-				toServer.writeInt(1);
-				toServer.writeInt(numBytes);
-				toServer.write(fromFileBuffer);
-				toServer.flush();
-			}
-
-			bufferedFileInputStream.close();
-			fileInputStream.close();
-
-
+			
+			sendWithCP1(filename, toServer, fromServer);
+			
 			System.out.println("Closing connection...");
 			toServer.writeInt(2);
 			toServer.flush();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		long timeTaken = System.nanoTime() - timeStarted;
 		System.out.println("Program took: " + timeTaken/1000000.0 + "ms to run");
+	}
+	
+	public static void sendWithCP1(String filename, DataOutputStream toServer, DataInputStream fromServer) {
+		try {
+			// Send the filename
+			toServer.writeInt(5);
+			toServer.writeInt(filename.getBytes().length);
+			toServer.write(filename.getBytes());
+			toServer.flush();
+
+			// Open the file
+			File file = new File(filename);
+			if(!file.exists()) {
+				System.err.println("File has problem");
+				System.exit(-1);
+			}
+			if(file.length() == 0) {
+				System.err.println("Empty file");
+				System.exit(-1);
+			}
+		    	FileInputStream fileInputStream = new FileInputStream(file);
+			BufferedInputStream bufferedFileInputStream = new BufferedInputStream(fileInputStream);
+			byte [] fromFileBuffer = new byte[117];
+			int numBytes = 0;
+			
+			// Send the file
+			int count = 0;
+			for (boolean fileEnded = false; !fileEnded;) {
+				numBytes = bufferedFileInputStream.read(fromFileBuffer);
+				fileEnded = numBytes < fromFileBuffer.length;
+
+				toServer.writeInt(1);
+				toServer.writeInt(numBytes);
+				toServer.write(fromFileBuffer, 0, numBytes);
+				toServer.flush();
+				count++;
+			}
+			System.out.println("Sent " + count + " blocks");
+			bufferedFileInputStream.close();
+			fileInputStream.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
